@@ -11,7 +11,7 @@ Both, ToDo and MySQL use environment variables.
   - MYSQL_HOST = mysql
   - MYSQL_USER = root
 
-Two of them serve identical purposes but are named differently, password and database.
+Two of them serve identical purposes, password and database, but are named differently.
 
 Configuration parameters like these could (and should -> 12-Factor Apps!) be stored externally in [Kubernetes ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/). 
 
