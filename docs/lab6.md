@@ -1,0 +1,73 @@
+# Lab 6: Connect ToDo with MySQL using ConfigMap and Secret
+
+It is bad practice to store sensitive data, such as passwords, in plaintext on a container. However, containers may need this data to perform operations like connecting with other systems. Kubernetes provides an object called Secret that can be used to store sensitive data.
+
+Kubernetes secrets are not overly safe, they are base64 encoded, not encrypted. You will need to take additional measures like adding Key Management Services to enhance protection. This would be way out of scope for this tutorial.
+
+Our example uses the password 'secret' for MySQL. To base64 encode it, you can submit the following command:
+
+```
+$ echo -n "secret" | base64
+c2VjcmV0
+```
+
+- '-n' will prevent a newline character.
+- Quotation marks "" are not part of the password. 
+- The result is not a hash, it will always be the same.
+
+This is the definition of our secert ([deploy/secret.yaml](../deploy/secret.yaml)):
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+type: Opaque
+data:
+  password: c2VjcmV0
+```
+
+Apply it with:
+
+```
+$ kubectl apply -f deploy/secret.yaml
+```
+
+Using this type of secret is almost the same like using the configmap we created.
+
+This is the relevant section from [deploy/mysql-v4.yaml](../deploy/mysql-v4.yaml):
+
+```
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+```
+
+And this is the relevant section from [deploy/todo-v4.yaml](../deploy/todo-v4.yaml):
+
+```
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+```
+
+Apply them as usual:
+
+```
+$ kubectl apply -f deploy/mysql-v4.yaml
+$ kubectl apply -f deploy/todo-v4.yaml
+```
+
+Test the app as always. Your previously entered items should still be visible.
+
+---
+
+**The End** 
+
+This concludes our hands-on tutorial. 

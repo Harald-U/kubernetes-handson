@@ -35,9 +35,9 @@ spec:
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_PASSWORD
+            secretKeyRef:
+              name: mysql-secret
+              key: password
         - name: MYSQL_DATABASE
           valueFrom:
             configMapKeyRef:
@@ -58,6 +58,6 @@ metadata:
 spec:
   selector:
     app: mysql
-  type: NodePort
+  type: NodePort  
   ports:
     - port: 3306
