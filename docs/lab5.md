@@ -2,15 +2,14 @@
 
 Both, ToDo and MySQL use environment variables.
 
-mysql:
-MYSQL_ROOT_PASSWORD = secret
-MYSQL_DATABASE =todos
-
-todo:
-MYSQL_PASSWORD = secret
-MYSQL_DB = todos
-MYSQL_HOST = mysql
-MYSQL_USER = root
+- mysql:
+  - MYSQL_ROOT_PASSWORD = secret
+  - MYSQL_DATABASE =todos
+- todo:
+  - MYSQL_PASSWORD = secret
+  - MYSQL_DB = todos
+  - MYSQL_HOST = mysql
+  - MYSQL_USER = root
 
 Two of them serve identical purposes but are named differently, password and database.
 

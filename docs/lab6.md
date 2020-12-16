@@ -68,6 +68,14 @@ Test the app as always. Your previously entered items should still be visible.
 
 ---
 
+This concludes our hands-on tutorial. 
+
+You have seen:
+* How to deploy applications on Kubernetes using Deployments and Services
+* How to expose services with Nodeports
+* How to add external storage (to a database) using PersistentVolumes and PersistentVolumeClaims
+* How to externalize configuration with ConfigMaps and Secrets
+
 **The End** 
 
-This concludes our hands-on tutorial. 
+
