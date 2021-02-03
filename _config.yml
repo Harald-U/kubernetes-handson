@@ -1,1 +1,20 @@
-theme: jekyll-theme-slate
+theme: jekyll-theme-minimal
+title: Kubernetes Hands-on
+description: Deploy a ToDo app on Kubernetes
+show_downloads: True
+navigation:
+  - title: HOME
+    url: /
+  - title: 1. Deploy ToDo stand-alone
+    url: docs/lab1
+  - title: 2. Deploy MySQL
+    url: docs/lab2
+  - title: 3. Connect ToDo with MySQL using Environment Variables
+    url: docs/lab3
+  - title: 4. MySQL with Persistent Volumes
+    url: docs/lab4
+  - title: 5. Connect ToDo with MySQL using ConfigMap
+    url: docs/lab5
+  - title: 6. Connect ToDo with MySQL using ConfigMap and Secret
+    url: docs/lab6
+
