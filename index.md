@@ -32,7 +32,7 @@ $ cd kubernetes-handson
 This is the minimum setup:
 
 ```
-$ minikube start --cpus 2 --memory 4096
+$ minikube start --cpus 2 --memory 4096 --driver docker
 ```
 
 By default, on Linux and macOS this will use Docker as driver, no virtualization. 
