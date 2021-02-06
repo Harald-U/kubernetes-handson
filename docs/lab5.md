@@ -141,9 +141,15 @@ spec:
         - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: secret
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_PASSWORD
         - name: MYSQL_DATABASE
-          value: todos
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_DB
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
@@ -159,14 +165,22 @@ metadata:
 spec:
   selector:
     app: mysql
+  type: NodePort
   ports:
     - port: 3306
-
 ```
 
 Notice that we read e.g. MYSQL_PASSWORD from the configmap but assign it to MYSQL_ROOT_PASSWORD.
 
-1. Apply the new MySQL configuration:
+1. Create the ConfigMap:
+
+    ```
+    kubectl create -f deploy/configmap-v1.yaml
+    ```
+
+    **Note:** ConfigMap use `create` instead of `apply` as `kubectl` command. They have no "desired" state. If you need to change a ConfigMap, you delete and recreate it. 
+
+2. Apply the new MySQL configuration:
 
     ```
     $ kubectl apply -f deploy/mysql-v3.yaml
@@ -174,12 +188,12 @@ Notice that we read e.g. MYSQL_PASSWORD from the configmap but assign it to MYSQ
    
    Actually this will not change anything since the content of the variables is only used during initial startup when the MySQL setup is performed.
 
-2. Apply the new ToDo configuration:
+3. Apply the new ToDo configuration:
     ```
     $ kubectl apply -f deploy/todo-v3.yaml
     ```
 
-3. Test the app. You should see your previous items still there.
+4. Test the app. You should see your previous items still there.
 
 ---
 

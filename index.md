@@ -18,7 +18,7 @@ The instructions in this lab are based on Minikube. They should work -- with som
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [stern](https://github.com/wercker/stern)
 
-You may not know `stern`: stern allows you to tail multiple pods on Kubernetes and multiple containers within the pod. Each result is color coded for quicker debugging.
+You may not know `stern`: stern allows you to tail (follow) the logs of multiple pods on Kubernetes and multiple containers within the pod. It keeps displaying the logs when a pod is stopped and restarted. Each result is color coded for quicker debugging.
 
 ## Get the code
 
@@ -35,8 +35,7 @@ This is the minimum setup:
 $ minikube start --cpus 2 --memory 4096 --driver docker
 ```
 
-By default, on Linux and macOS this will use Docker as driver, no virtualization. 
-
+This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. On Linux and MacOS, Docker is the recommended driver. 
 
 ## Labs
 

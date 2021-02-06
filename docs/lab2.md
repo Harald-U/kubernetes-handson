@@ -80,7 +80,7 @@ It contains 2 key-value pairs in a YAML array called `env`.
     $ stern mysql
     ```
 
-    and
+    and in your first shell issue:
 
     ```
     $ kubectl apply -f deploy/mysql-v1.yaml

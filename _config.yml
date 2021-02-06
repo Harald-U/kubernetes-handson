@@ -3,7 +3,7 @@ title: Kubernetes Hands-on
 description: Deploy a ToDo app on Kubernetes
 show_downloads: True
 navigation:
-  - title: HOME
+  - title: Overview, intial setup
     url: /
   - title: 1. Deploy ToDo stand-alone
     url: docs/lab1

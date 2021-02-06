@@ -80,7 +80,7 @@ When we created the MySQL service definition with the name 'mysql', this name 'm
     $ stern todo
     ```
 
-    Then deploy the new Todo version:
+    Then, in the first shell, deploy the new Todo version:
 
     ```
     $ kubectl apply -f deploy/todo-v2.yaml

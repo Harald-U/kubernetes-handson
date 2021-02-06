@@ -15,7 +15,7 @@ c2VjcmV0
 - Quotation marks "" are not part of the password. 
 - The result is not a hash, it will always be the same.
 
-This is the definition of our secert ([deploy/secret.yaml](../deploy/secret.yaml)):
+This is the definition of our secret ([deploy/secret.yaml](../deploy/secret.yaml)):
 
 ```
 apiVersion: v1
@@ -27,10 +27,10 @@ data:
   password: c2VjcmV0
 ```
 
-Apply it with:
+Create it with:
 
 ```
-$ kubectl apply -f deploy/secret.yaml
+$ kubectl create -f deploy/secret.yaml
 ```
 
 Using this type of secret is almost the same like using the configmap we created.
