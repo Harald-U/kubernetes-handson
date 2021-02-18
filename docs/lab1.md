@@ -133,7 +133,7 @@ The ToDo app runs on port 3000 which will be exposed a NodePort.
 
     Copy the URL in your browser. This should open the ToDo app. Test if it works. 
 
-    If you (or Kubernetes) redeploy the app, all data is gone because it isn't persisted, the sqlite database resides in the container.
+    If you (or Kubernetes) redeploy the app, all data is gone because it isn't persisted, the sqlite database resides inside the container.
 
     ![](todo-app.png)
 

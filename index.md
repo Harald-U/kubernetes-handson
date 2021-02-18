@@ -41,9 +41,9 @@ This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. O
 
 The ToDo app we are going to deploy is based on Node.js. It can run "stand-alone" and will use a built in SQLite database then. Or it can be used together with MySQL. During the labs we add more and more Kubernetes features.
 
-- [**Lab 1**](docs/lab1.md) Deploy ToDo stand-alone
-- [**Lab 2**](docs/lab2.md) Deploy MySQL
-- [**Lab 3**](docs/lab3.md) Connect ToDo with MySQL using Environment Variables
-- [**Lab 4**](docs/lab4.md) MySQL with Persistent Volumes
-- [**Lab 5**](docs/lab5.md) Connect ToDo with MySQL using ConfigMap
-- [**Lab 6**](docs/lab6.md) Connect ToDo with MySQL using ConfigMap and Secret
+- [Lab 1](docs/lab1.md) - Deploy ToDo stand-alone
+- [Lab 2](docs/lab2.md) - Deploy MySQL
+- [Lab 3](docs/lab3.md) - Connect ToDo with MySQL using Environment Variables
+- [Lab 4](docs/lab4.md) - MySQL with Persistent Volumes
+- [Lab 5](docs/lab5.md) - Connect ToDo with MySQL using ConfigMap
+- [Lab 6](docs/lab6.md) - Connect ToDo with MySQL using ConfigMap and Secret
