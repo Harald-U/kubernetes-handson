@@ -1,3 +1,7 @@
+---
+title: 1. Deploy ToDo stand-alone
+---
+
 # Lab 1: Deploy ToDo app stand-alone
 
 In the original Docker tutorial, the command to deploy the ToDo app stand-alone is:

@@ -1,3 +1,7 @@
+---
+title: 6. Connect ToDo with MySQL using ConfigMap and Secret
+---
+
 # Lab 6: Connect ToDo with MySQL using ConfigMap and Secret
 
 It is bad practice to store sensitive data, such as passwords, in plaintext on a container. However, containers may need this data to perform operations like connecting with other systems. Kubernetes provides an object called Secret that can be used to store sensitive data.

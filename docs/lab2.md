@@ -1,3 +1,7 @@
+---
+title: 2. Deploy MySQL
+---
+
 # Lab 2: Create MySQL deployment
 
 In the Docker Getting Started this was the command to start MySQL:

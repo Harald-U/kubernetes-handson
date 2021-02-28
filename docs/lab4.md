@@ -1,3 +1,7 @@
+---
+title: 4. MySQL with Persistent Volumes
+---
+
 # Lab 4: MySQL with Persistent Volumes
 
 Our initial MySQL deployment in Lab 2 had no external storage, instead it stored data within the pod. This doesn't really make sense for a database: When the pod is recreated for any reason, the data is gone!

@@ -1,3 +1,7 @@
+---
+title: 3. Connect ToDo with MySQL using Environment Variables
+---
+
 # Lab 3: Connect ToDo with MySQL using Environment Variables
 
 
