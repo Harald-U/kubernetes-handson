@@ -4,13 +4,13 @@ title: 1. Deploy ToDo stand-alone
 
 # Lab 1: Deploy ToDo app stand-alone
 
-In the original Docker tutorial, the command to deploy the ToDo app stand-alone is:
+In the original Docker tutorial, the command to deploy the ToDo app stand-alone is (don't run this command here!):
 
 ```
 $ docker run -dp 3000:3000 getting-started
 ```
 
-* The image `getting-started` was created in a previous step locally.
+* The image `getting-started` was created in the Docker tutorial in a previous step locally.
 * `-p 3000:3000` maps Container port 3000 on local port 3000.
 
 The file [deploy/todo-v1.yaml](../deploy/todo-v1.yaml) contains the configuration for the equivalent Kubernetes deployment and service:
@@ -51,7 +51,7 @@ spec:
       port: 3000
 ```
 
-Here we are using my version of the getting-started container image on Docker Hub.
+Here we are using my version of the getting-started container image on Docker Hub (`haraldu/getting-started:latest`).
 
 The ToDo app runs on port 3000 which will be exposed a NodePort.
 
