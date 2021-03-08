@@ -53,6 +53,32 @@ spec:
 
 Here we are using my version of the getting-started container image on Docker Hub (`haraldu/getting-started:latest`).
 
+=======================================================================================
+
+**FYI** 
+
+You could use your own "getting-started" container image, the one you created in the last hands-on (Docker 101 Tutorial). The following command will load the container image from your local Docker image store into Minikube's Docker image store:
+
+```
+minikube image load getting-started:local
+```
+
+To use this image you will have to modify **all** deployments for the "To-Do" app to use the local version of the image and change the ImagePull Policy to 'Never':
+
+```
+    spec:
+      containers:
+      - name: todo
+        image: getting-started:latest
+        imagePullPolicy: Never
+```
+
+With `imagePullPolicy: Never` Kubernetes will use your locally stored image. Default is `imagePullPolicy: Always` which will try to pull the image from Docker Hub.
+
+**/FYI**
+
+=======================================================================================
+
 The ToDo app runs on port 3000 which will be exposed a NodePort.
 
 1. Apply the configuration:
