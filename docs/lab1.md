@@ -155,9 +155,9 @@ The ToDo app runs on port 3000 which will be exposed a NodePort.
     |-------------|------------|--------------|---------------------------|
     |  NAMESPACE  |    NAME    | TARGET PORT  |            URL            |
     |-------------|------------|--------------|---------------------------|
-    | default     | kubernetes | No node port |
-    | default     | todo       |         3000 | http://192.168.49.2:30675 |
-    | kube-system | kube-dns   | No node port |
+    | default     | kubernetes | No node port |                           |
+    | default     | todo       |         3000 | http://192.168.49.2:30078 |
+    | kube-system | kube-dns   | No node port |                           |
     |-------------|------------|--------------|---------------------------|
     ```
 
