@@ -113,12 +113,12 @@ When the pod is started for the first time, a claim is made for storage and Kube
     There is no "restart" for Pods, the solution is to delete the Pod and have Kubernetes recreate it:
 
     ```
-    $ kc get pod
+    $ kubectl get pod
     NAME                        READY   STATUS    RESTARTS   AGE
     mysql-5bfb9886b6-j2c8h      1/1     Running   0          67s
     todo-app-744bcb9777-v8v64   1/1     Running   0          2m20s
 
-    $ kc delete pod  todo-app-744bcb9777-v8v64
+    $ kubectl delete pod  todo-app-744bcb9777-v8v64
     pod "todo-app-744bcb9777-v8v64" deleted
     ```
 

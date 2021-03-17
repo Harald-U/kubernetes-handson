@@ -27,8 +27,8 @@ You may not know `stern`: stern allows you to tail (follow) the logs of multiple
 ## Get the code
 
 ```
-git clone https://github.com/Harald-U/kubernetes-handson.git
-cd kubernetes-handson
+$ git clone https://github.com/Harald-U/kubernetes-handson.git
+$ cd kubernetes-handson
 ```
 
 ## Prepare Minikube
@@ -36,7 +36,7 @@ cd kubernetes-handson
 This is the minimum setup:
 
 ```
-minikube start --cpus 2 --memory 4096 --driver docker
+$ minikube start --cpus 2 --memory 4096 --driver docker
 ```
 
 This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. On Linux and MacOS, Docker is the recommended driver. 
