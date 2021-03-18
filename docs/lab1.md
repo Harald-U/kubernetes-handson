@@ -95,7 +95,7 @@ The ToDo app runs on port 3000 which will be exposed a NodePort.
     todo-app-f8549b989-9cbdr   1/1     Running   0          44s
     ```
 
-3. Check the logs with
+3. Check the logs with `stern` (or `podtail`)
 
     ```
     $ stern todo
@@ -106,66 +106,79 @@ The ToDo app runs on port 3000 which will be exposed a NodePort.
 
     This means the app started on port 3000 and is using sqlite.
 
-4. Find the number of the NodePort with
+4. Accessing the ToDo app
+
+    a. On Docker Desktop (Mac or Windows) and Docker on Linux:
 
     ```
-    $ kubectl get svc
-    NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-    kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          3d1h
-    todo         NodePort    10.101.211.232   <none>        3000:30675/TCP   4m26s
+    $ minikube service todo
     ```
+    ---
+    b. Via NodePort (Linux only):
 
-    The kubernetes service is there by default.
-    The PORT(S) column shows port 3000 is mapped on NodePort 30675. The NodePort number will be different for your deployment.
+      1. Find the number of the NodePort with
 
-    Another way to programmatically find the NodePort is using the ability of `kubectl`to output JSON data:
+          ```
+          $ kubectl get svc
+          NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+          kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          3d1h
+          todo         NodePort    10.101.211.232   <none>        3000:30675/TCP   4m26s
+          ```
 
-    ```
-    $ kubectl get svc todo --output 'jsonpath={.spec.ports[*].nodePort}'
-    ```
+          The kubernetes service is there by default.
+          The PORT(S) column shows port 3000 is mapped on NodePort 30675. The NodePort number will be different for your deployment.
 
-5. IP Address
+          Another way to programmatically find the NodePort is using the ability of `kubectl`to output JSON data:
 
-    A NodePort is mapped to the IP address of each Kubernetes worker node. Minikube has 1 worker node, its IP address is this:
+          ```
+          $ kubectl get svc todo --output 'jsonpath={.spec.ports[*].nodePort}'
+          ```
 
-    ```
-    $ minikube ip
-    ```
+    5. IP Address
 
-    The URL of the ToDo app is then:
+        A NodePort is mapped to the IP address of each Kubernetes worker node. Minikube has 1 worker node, its IP address is this:
 
-    ``` 
-    $ echo "http://$(minikube ip):$(kubectl get svc todo --output 'jsonpath={.spec.ports[*].nodePort}')"
-    ```
+        ```
+        $ minikube ip
+        ```
 
-    Output for example:
-    ```
-    http://192.168.49.2:30078
-    ```
+        The URL of the ToDo app is then:
 
-    Minikube has a shortcut for this:
+        ``` 
+        $ echo "http://$(minikube ip):$(kubectl get svc todo --output 'jsonpath={.spec.ports[*].nodePort}')"
+        ```
 
-    ```
-    minikube service list
-    ```
+        Output for example:
+        ```
+        http://192.168.49.2:30078
+        ```
 
-    Result:
+        Minikube has a shortcut for this:
 
-    ```
-    |-------------|------------|--------------|---------------------------|
-    |  NAMESPACE  |    NAME    | TARGET PORT  |            URL            |
-    |-------------|------------|--------------|---------------------------|
-    | default     | kubernetes | No node port |                           |
-    | default     | todo       |         3000 | http://192.168.49.2:30078 |
-    | kube-system | kube-dns   | No node port |                           |
-    |-------------|------------|--------------|---------------------------|
-    ```
+        ```
+        minikube service list
+        ```
 
-    Copy the URL in your browser. This should open the ToDo app. Test if it works. 
+        Result:
 
-    If you (or Kubernetes) redeploy the app, all data is gone because it isn't persisted, the sqlite database resides inside the container.
+        ```
+        |-------------|------------|--------------|---------------------------|
+        |  NAMESPACE  |    NAME    | TARGET PORT  |            URL            |
+        |-------------|------------|--------------|---------------------------|
+        | default     | kubernetes | No node port |                           |
+        | default     | todo       |         3000 | http://192.168.49.2:30078 |
+        | kube-system | kube-dns   | No node port |                           |
+        |-------------|------------|--------------|---------------------------|
+        ```
 
-    ![](todo-app.png)
+        Copy the URL in your browser. This should open the ToDo app. Test if it works. 
+
+    ---
+
+   
+  If you (or Kubernetes) redeploy the app, all data is gone because it isn't persisted, the sqlite database resides inside the container.
+
+  ![](todo-app.png)
 
 ---
 

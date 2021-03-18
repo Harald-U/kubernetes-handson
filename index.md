@@ -20,9 +20,10 @@ The instructions in this lab are based on Minikube. They should work -- with som
 * [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 * [git](https://git-scm.com/downloads)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [podtail](https://github.com/johnmccabe/podtail/releases) (Assets = Downloads!) **OR**
 * [stern](https://github.com/wercker/stern)
 
-You may not know `stern`: stern allows you to tail (follow) the logs of multiple pods on Kubernetes and multiple containers within the pod. It keeps displaying the logs when a pod is stopped and restarted. Each result is color coded for quicker debugging.
+You may not know `podtail` or `stern`: they allows you to tail (follow) the logs of multiple pods on Kubernetes and multiple containers within the pod. They keep displaying the logs when a pod is stopped and restarted. Each result is color coded for quicker debugging. Windows support seems better for `podtail`.
 
 ## Get the code
 

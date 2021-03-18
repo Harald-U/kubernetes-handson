@@ -78,7 +78,7 @@ When we created the MySQL service definition with the name 'mysql', this name 'm
 
 1. Deploy the configuration to Kubernetes
 
-    Reuse the second shell but redirect `stern` to the Todo app:
+    Reuse the second shell but redirect `stern` or `podtail` to the Todo app:
 
     ```
     $ stern todo
@@ -112,10 +112,8 @@ When we created the MySQL service definition with the name 'mysql', this name 'm
 
 2. Test the app in your browser 
 
-    If you don't remember the correct URL, there is a script that will display it for you:
-
     ```
-    $ deploy/showurls.sh
+    $ minikube service todo
     ```
 
     Make sure to add some items!
