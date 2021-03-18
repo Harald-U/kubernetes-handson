@@ -20,8 +20,11 @@ The instructions in this lab are based on Minikube. They should work -- with som
 * [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 * [git](https://git-scm.com/downloads)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* [podtail](https://github.com/johnmccabe/podtail/releases) (Assets = Downloads!) **OR**
-* [stern](https://github.com/wercker/stern)
+* [stern](https://github.com/wercker/stern/releases) (rename stern_*_amd64[.exe] to stern[.exe])
+  **OR**
+* [podtail](https://github.com/johnmccabe/podtail/releases) (Assets = Downloads! If necessary, extract the executable.)
+
+All executables must be copied to a location in your PATH (e.g. for Windows copy to "C:\Windows\System32").
 
 You may not know `podtail` or `stern`: they allows you to tail (follow) the logs of multiple pods on Kubernetes and multiple containers within the pod. They keep displaying the logs when a pod is stopped and restarted. Each result is color coded for quicker debugging. Windows support seems better for `podtail`.
 
