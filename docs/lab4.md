@@ -124,10 +124,10 @@ When the pod is started for the first time, a claim is made for storage and Kube
 
     The name of your todo pod will be different, of course!
 
-5. Test the app. If you closed your browser, get the URL with
+5. Test the app. If you closed your browser, reopen the ToDo app with
 
     ```
-    $ deploy/showurls.sh
+    $ minikube service todo
     ```
 
     Make sure to add items.

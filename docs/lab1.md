@@ -1,19 +1,21 @@
 ---
-title: 1. Deploy ToDo stand-alone
+title: 1. Deploy ToDo app
 ---
 
-# Lab 1: Deploy ToDo app stand-alone
+# Lab 1: Deploy ToDo app 
 
-In the original Docker tutorial, the command to deploy the ToDo app stand-alone is (**Do not run this command here!** It is only here for reference.):
+In the original Docker tutorial, this is the command to deploy the ToDo app stand-alone without database.
+
+**Do not run this command here!** It is only here for reference!S
 
 ```
 $ docker run -dp 3000:3000 getting-started
 ```
 
-* The image `getting-started` was created in the Docker tutorial in a previous step locally.
+* `getting-started` is the name of the container image that was created when following the Docker tutorial.
 * `-p 3000:3000` maps Container port 3000 on local port 3000.
 
-The file [deploy/todo-v1.yaml](../deploy/todo-v1.yaml) contains the configuration for the equivalent Kubernetes deployment and service:
+An equivalent Kubernetes deployment and service would look like this (file [deploy/todo-v1.yaml](../deploy/todo-v1.yaml)):
 
 ```
 apiVersion: apps/v1
@@ -51,8 +53,9 @@ spec:
       port: 3000
 ```
 
-Here we are using my version of the getting-started container image on Docker Hub (`haraldu/getting-started:latest`).
+The `image:` tag points to my version of the getting-started container image on Docker Hub (`haraldu/getting-started:latest`).
 
+{% comment %}
 =======================================================================================
 
 **FYI** 
@@ -78,6 +81,7 @@ With `imagePullPolicy: Never` Kubernetes will use your locally stored image. Def
 **/FYI**
 
 =======================================================================================
+{% endcomment %}
 
 The ToDo app runs on port 3000 which will be exposed a NodePort.
 
@@ -108,75 +112,13 @@ The ToDo app runs on port 3000 which will be exposed a NodePort.
 
 4. Accessing the ToDo app
 
-    a. On Docker Desktop (Mac or Windows) and Docker on Linux:
-
     ```
     $ minikube service todo
     ```
-    ---
-    b. Via NodePort (Linux only):
 
-      1. Find the number of the NodePort with
 
-          ```
-          $ kubectl get svc
-          NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-          kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          3d1h
-          todo         NodePort    10.101.211.232   <none>        3000:30675/TCP   4m26s
-          ```
 
-          The kubernetes service is there by default.
-          The PORT(S) column shows port 3000 is mapped on NodePort 30675. The NodePort number will be different for your deployment.
-
-          Another way to programmatically find the NodePort is using the ability of `kubectl`to output JSON data:
-
-          ```
-          $ kubectl get svc todo --output 'jsonpath={.spec.ports[*].nodePort}'
-          ```
-
-    5. IP Address
-
-        A NodePort is mapped to the IP address of each Kubernetes worker node. Minikube has 1 worker node, its IP address is this:
-
-        ```
-        $ minikube ip
-        ```
-
-        The URL of the ToDo app is then:
-
-        ``` 
-        $ echo "http://$(minikube ip):$(kubectl get svc todo --output 'jsonpath={.spec.ports[*].nodePort}')"
-        ```
-
-        Output for example:
-        ```
-        http://192.168.49.2:30078
-        ```
-
-        Minikube has a shortcut for this:
-
-        ```
-        minikube service list
-        ```
-
-        Result:
-
-        ```
-        |-------------|------------|--------------|---------------------------|
-        |  NAMESPACE  |    NAME    | TARGET PORT  |            URL            |
-        |-------------|------------|--------------|---------------------------|
-        | default     | kubernetes | No node port |                           |
-        | default     | todo       |         3000 | http://192.168.49.2:30078 |
-        | kube-system | kube-dns   | No node port |                           |
-        |-------------|------------|--------------|---------------------------|
-        ```
-
-        Copy the URL in your browser. This should open the ToDo app. Test if it works. 
-
-    ---
-
-   
-  If you (or Kubernetes) redeploy the app, all data is gone because it isn't persisted, the sqlite database resides inside the container.
+**Note:** If you (or Kubernetes) redeploy the app, all data is gone because it isn't persisted, the app uses a built-in sqlite database which resides inside the container and is destroyed on redeploy.
 
   ![](todo-app.png)
 

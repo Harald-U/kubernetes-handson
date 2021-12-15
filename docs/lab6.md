@@ -4,9 +4,9 @@ title: 6. Connect ToDo with MySQL using ConfigMap and Secret
 
 # Lab 6: Connect ToDo with MySQL using ConfigMap and Secret
 
-It is bad practice to store sensitive data, such as passwords, in plaintext on a container. However, containers may need this data to perform operations like connecting with other systems. Kubernetes provides an object called Secret that can be used to store sensitive data.
+It is bad practice to store sensitive data, such as passwords, in plain text on a container. However, containers may need this data to perform operations like connecting with other systems. Kubernetes provides an object called Secret that can be used to store sensitive data.
 
-Kubernetes secrets are not overly safe, they are base64 encoded, not encrypted. You will need to take additional measures like adding Key Management Services to enhance protection. This would be way out of scope for this tutorial.
+Kubernetes secrets are not really safe, they are base64 encoded, not encrypted. You will need to take additional measures like adding a [Key Management Service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/) to your Kubernetes cluster to enhance protection. This would be way out of scope for this tutorial. Commercial Cloud providers typically have out-of-the-box solutions, here is the documentation for [IBM Cloud](https://cloud.ibm.com/docs/containers?topic=containers-encryption&locale=en).
 
 Our example uses the password 'secret' for MySQL. To base64 encode it, you can submit the following command:
 
@@ -16,8 +16,8 @@ c2VjcmV0
 ```
 
 - '-n' will prevent a newline character.
-- Quotation marks "" are not part of the password. 
-- The result is not a hash, it will always be the same.
+- Quotation marks " " are required and not considered part of the password. 
+- The result is not a hash, it will always be the same. (A hash would be random.)
 
 This is the definition of our secret ([deploy/secret.yaml](../deploy/secret.yaml)):
 

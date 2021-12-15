@@ -5,7 +5,9 @@ title: 3. Connect ToDo with MySQL using Environment Variables
 # Lab 3: Connect ToDo with MySQL using Environment Variables
 
 
-This is the docker command from Docker Getting Started that will connect the ToDo app with MySQL:
+This is the docker command from Docker Getting Started that will connect the ToDo app with MySQL.
+
+Again: **Do not run this command!**
 
 ```
 docker run -dp 3000:3000 \
@@ -74,11 +76,11 @@ All I did was add the environment variables.
 
 But how will the ToDo app find the MySQL server/pod? The environment variable MYSQL_HOST seems a good pick but it contains only 'mysql'. How is this going to work?
 
-When we created the MySQL service definition with the name 'mysql', this name 'mysql' was registered with the Kubernetes DNS (name service). Our two pods and two services share the same [Kubernetes namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) ("default") and therefore the MySQL service doesn't need any further qualification. Apps in the same namespace can simply call other apps or send requests to them using their name only. Apps in different namespaces can use the fully qualified name: [servicename].[namespacename].cloud.local (mysql.default.cloud.local). 
+When we created the MySQL service definition with the name 'mysql', this name 'mysql' was registered with the Kubernetes DNS (name service). Our two pods and two services share the same [Kubernetes namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) ("default") and therefore the MySQL service doesn't need any further qualification. Apps in the same namespace can simply call other apps or send requests to them using their name only. Apps in different namespaces can use the fully qualified name: [servicename].[namespacename].cloud.local (e.g. `mysql.default.cloud.local`). 
 
 1. Deploy the configuration to Kubernetes
 
-    Reuse the second shell but redirect `stern` or `podtail` to the Todo app:
+    Reuse the second shell but redirect `stern` to the Todo app:
 
     ```
     $ stern todo

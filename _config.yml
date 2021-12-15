@@ -5,7 +5,7 @@ show_downloads: False
 navigation:
   - title: Overview, intial setup
     url: /
-  - title: 1. Deploy ToDo stand-alone
+  - title: 1. Deploy ToDo app
     url: docs/lab1
   - title: 2. Deploy MySQL
     url: docs/lab2

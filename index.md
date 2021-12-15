@@ -4,7 +4,9 @@ title: Overview, intial setup
 
 # Overview
 
-Based on the [Docker Getting Started Tutorial](https://github.com/docker/getting-started). The Docker tutorial uses a Node.js based ToDo app. This app is packaged as a Container image and then run on Docker, first stand-alone using a built-in database, and then as a multi-container app with docker-compose, running MySQL as database in a second container.
+Based on the [Docker Getting Started Tutorial](https://github.com/docker/getting-started). 
+
+The Docker tutorial uses a Node.js based ToDo app. This app is packaged as a Container image and then run on Docker, first stand-alone using a built-in database, and then as a multi-container app with docker-compose, running MySQL as database in a second container.
 
 ![Agenda](docs/agenda.png)
 
@@ -12,7 +14,7 @@ We will use the information in the Docker commands of the tutorial to create Kub
 
 At one point the Docker Getting Started Tutorial has you publish the ToDo app container image on Docker Hub in your own repository. In this Hands-on I am using my version of the getting-started image, but of course you can use your own.
 
-The instructions in this lab are based on Minikube. They should work -- with some modifications -- with the Kubernetes that is part of Docker Desktop, with K3d, Kind, or any other Kubernetes distribution. Your mileage may vary ...
+The instructions in this lab are based on **Minikube**. They should work -- with some modifications -- with the Kubernetes that is part of Docker Desktop, with K3d, Kind, or any other Kubernetes distribution. Your mileage may vary ...
 
 ## Prerequisites
 
@@ -21,13 +23,10 @@ The instructions in this lab are based on Minikube. They should work -- with som
 * [git](https://git-scm.com/downloads)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * [stern](https://github.com/wercker/stern/releases) (rename stern_*_amd64[.exe] to stern[.exe])
-  **OR**
-* [podtail](https://github.com/johnmccabe/podtail/releases) (Assets = Downloads! If necessary, extract the executable.)
 
 All executables must be copied to a location in your PATH (e.g. for Windows copy to "C:\Windows\System32").
 
-You may not know `podtail` or `stern`: they allows you to tail (follow) the logs of multiple pods on Kubernetes and multiple containers within the pod. They keep displaying the logs when a pod is stopped and restarted. Each result is color coded for quicker debugging. Windows support seems better for `podtail`.
-
+You may not know `stern`: it allows you to tail (follow) the logs of multiple pods on Kubernetes and multiple containers within the pod. It keeps displaying the logs when a pod is stopped and restarted. Each result is color coded for quicker debugging. 
 ## Get the code
 
 ```
