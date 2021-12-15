@@ -1,5 +1,6 @@
 theme: jekyll-theme-minimal
 title: Kubernetes Hands-on
+updated: 15.12.2021
 description: Deploy a ToDo app on Kubernetes
 show_downloads: False
 navigation:
