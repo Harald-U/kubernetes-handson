@@ -6,7 +6,7 @@ title: 1. Deploy ToDo app
 
 In the original Docker tutorial, this is the command to deploy the ToDo app stand-alone without database.
 
-**Do not run this command here!** It is only here for reference!S
+**Do not run this command here!** It is only here for reference!
 
 ```
 $ docker run -dp 3000:3000 getting-started
