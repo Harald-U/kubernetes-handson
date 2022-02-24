@@ -108,8 +108,10 @@ When we created the MySQL service definition with the name 'mysql', this name 'm
     ```
 
     The first pod, todo-app-f8549b989-hhvj6, was connected to sqlite. 
-    The new pod, todo-app-744bcb9777-vjl7c, successfully connects to MySQL.
-    The last message (preceded with '-') indicates that the first pod is terminated.
+    A new pod, todo-app-744bcb9777-vjl7c, is started (indicated by '+') and successfully connects to MySQL.
+    The last message (preceded with '-') indicates that the first pod, todo-app-f8549b989-hhvj6, has terminated.
+
+    **Note:** With the configuration file todo-v2.yaml you "declared a new intent" regarding the state of the Todo app and by "apply"ing it, you made this known to Kubernetes. Kubernetes then changed the existing state of the Todo application to match the desired state by starting a new pod and deleting the old one. This approach is called "declarative". With Docker, you used an "imperative" approach: tell Docker to stop the old container ("docker stop ..."), then delete the old container ("docker rm ..."), then start the new container ("docker run ..."). 
 
 
 2. Test the app in your browser 
