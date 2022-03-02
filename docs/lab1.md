@@ -55,18 +55,41 @@ spec:
 
 The `image:` tag points to my version of the getting-started container image on Docker Hub (`haraldu/getting-started:latest`).
 
-{% comment %}
 =======================================================================================
 
 **FYI** 
 
-You could use your own "getting-started" container image, the one you created in the last hands-on (Docker 101 Tutorial). The following command will load the container image from your local Docker image store into Minikube's Docker image store:
+You can use your own "getting-started" container image, the one you created in the last hands-on (Docker 101 Tutorial). There are two methods:
 
-```
-minikube image load getting-started:local
-```
+* **Method 1**
 
-To use this image you will have to modify **all** deployments for the "To-Do" app to use the local version of the image and change the ImagePull Policy to 'Never':
+  If you already built the image in your local Docker, the following command will load this container image from your local Docker image store into Minikube's Docker image store:
+
+  ```
+  minikube image load getting-started:latest
+  ```
+
+* **Method 2**
+
+  Build the image directly in the Minikube internal Docker environment. To do so, point your docker CLI to Minikube:
+
+  ```
+  eval $(minikube docker-env)
+  ```
+
+  To see if this worked, execute:
+
+  ```
+  docker images
+  ```
+
+  You should see all the container images that make up Kubernetes coming from the k8s.gcr.io repository.
+  
+
+  Now simply build your image using the normal `docker build ... ` command.
+
+
+To use the image from Minikubes own repository, you will have to modify **all** deployments for the "To-Do" app to use the local version of the image and change the ImagePull Policy to 'Never':
 
 ```
     spec:
@@ -81,7 +104,7 @@ With `imagePullPolicy: Never` Kubernetes will use your locally stored image. Def
 **/FYI**
 
 =======================================================================================
-{% endcomment %}
+
 
 The ToDo app runs on port 3000 which will be exposed a NodePort.
 
