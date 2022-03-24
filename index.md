@@ -45,6 +45,32 @@ $ minikube start --cpus 2 --memory 4096 --driver docker
 
 This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. On Linux and MacOS, Docker is the recommended driver for Minikube. 
 
+## NOTE: bwLehrpool 
+
+There may be a "leftover" (and damaged) Minikube instance that was present when the VMware image for the Linux environment was built.  This may cause problems. Enter the following command before you start this workshop:
+
+```
+$ minikube delete
+```
+
+Output will be most likely something like this:
+
+```
+🔥  minikube" in docker wird gelöscht...
+🔥  /home/student/.minikube/machines/minikube wird entfernt...
+💀  Removed all traces of the "minikube" cluster.
+```
+
+Please be aware that this command will delete any existing Minikube cluster!
+
+**bwLehrpool has sufficient RAM to increase memory for Minikube**, you can use this command instead:
+
+```
+$ minikube start --cpus 2 --memory 6144 --driver docker
+```
+
+which will assign 6 GB of RAM.
+
 ## Labs
 
 The ToDo app we are going to deploy is based on Node.js. It can run "stand-alone" and will use a built in SQLite database then. Or it can be used together with MySQL. During the labs we add more and more Kubernetes features.
