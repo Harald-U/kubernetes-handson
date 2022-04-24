@@ -4,9 +4,9 @@ title: 2. Deploy MySQL
 
 # Lab 2: Create MySQL deployment
 
-In the Docker Getting Started this was the command to start MySQL.
+In the Docker 101 this is the command to start MySQL.
 
-**Do not run this command!** It is only here for reference.
+> **Do not run this command!** It is only here for reference.
 
 ```
 docker run -d \
@@ -17,12 +17,14 @@ docker run -d \
     mysql:5.7
 ```
 
-* In Kubernetes we don't need a network and network-alias
-* Kubernetes has volumes, too, but for simplicities sake we will start without volumes (but add them later)
-* The container image is `mysql:5.7` and is located on Docker Hub
-* There are two environment variables, MYSQL_ROOT_PASSWORD and MYSQL_DATABASE
+This is the information from the docker command:
 
-The Kubernetes deployment and service configuration for MySQL looks like this ([deploy/mysql-v1.yaml](../deploy/mysql-v1.yaml)):
+* `network` and `network-alias` are not needed in Kubernetes
+* Kubernetes has `volumes`, too, but for simplicity we will start without volumes (but add them later)
+* The container image name is `mysql:5.7` (and is implicitely located on Docker Hub)
+* There are two `environment variables`, MYSQL_ROOT_PASSWORD and MYSQL_DATABASE
+
+Using this information, the Kubernetes deployment and service configuration for MySQL looks like this ([deploy/mysql-v1.yaml](../deploy/mysql-v1.yaml)):
 
 ```
 apiVersion: apps/v1
@@ -65,7 +67,9 @@ spec:
       port: 3306
 ```
 
-This isn't too different from the todo deployment, the names and labels are changed, of course the container image reference is different.
+This isn't too different from the todo deployment, the names and labels are changed, and of course the container image reference is different.
+
+> **NOTE:** As you can see, we are creating a Kubernetes Deployment for MySQL. Deployments are typically used for stateless applications which a database like MySQL IS NOT. Stateful applications like a database should use Kubernetes Stateful Sets, instead. What we build here is a demo scenario and for a demo it is sufficient (and easier) to use a Deployment. For a real production MySQL environment with primary and secondary instances and replication you would use a MySQL Kubernetes operator which in turn would most likely result in MySQL StatefulSets. For examples see [Percona Operators](https://www.percona.com/software/percona-kubernetes-operators).
 
 The section for environment variables is new:
 
@@ -83,13 +87,13 @@ It contains 2 key-value pairs in a YAML array called `env`.
 
     In another, second shell start:
     ```
-    $ stern mysql
+    stern mysql
     ```
 
     and in your first shell issue:
 
     ```
-    $ kubectl apply -f deploy/mysql-v1.yaml
+    kubectl apply -f deploy/mysql-v1.yaml
     ```
 
     There will be a lot of output in the `stern` shell but it should state in the end:

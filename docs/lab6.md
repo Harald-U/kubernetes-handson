@@ -34,7 +34,7 @@ data:
 Create it with:
 
 ```
-$ kubectl create -f deploy/secret.yaml
+kubectl create -f deploy/secret.yaml
 ```
 
 Using this type of secret is almost the same like using the configmap we created.
@@ -64,8 +64,8 @@ And this is the relevant section from [deploy/todo-v4.yaml](../deploy/todo-v4.ya
 Apply them as usual:
 
 ```
-$ kubectl apply -f deploy/mysql-v4.yaml
-$ kubectl apply -f deploy/todo-v4.yaml
+kubectl apply -f deploy/mysql-v4.yaml
+kubectl apply -f deploy/todo-v4.yaml
 ```
 
 Test the app as always. Your previously entered items should still be visible.
@@ -86,9 +86,8 @@ You have seen:
 If you no longer need your Minikube cluster you can simply delete it with:
 
 ```
-$ minikube delete
+minikube delete
 ```
-
 
 **The End** 
 

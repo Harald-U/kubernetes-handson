@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: todo
-        image: haraldu/getting-started:latest
+        image: haraldu/todo-app:latest
         ports:
         - containerPort: 3000
         env:
@@ -28,15 +28,3 @@ spec:
           value: mysql
         - name: MYSQL_USER
           value: root
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: todo
-spec:
-  selector:
-    app: todo
-  type: NodePort
-  ports:
-    - protocol: TCP
-      port: 3000

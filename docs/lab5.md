@@ -79,7 +79,7 @@ spec:
     spec:
       containers:
       - name: todo
-        image: haraldu/getting-started:latest
+        image: haraldu/todo-app:latest
         ports:
         - containerPort: 3000
         env:
@@ -182,19 +182,19 @@ Notice that we read e.g. MYSQL_PASSWORD from the configmap but assign it to MYSQ
     kubectl create -f deploy/configmap-v1.yaml
     ```
 
-    **Note:** ConfigMap use `create` instead of `apply` as `kubectl` command. They have no "desired" state. If you need to change a ConfigMap, you delete and recreate it. 
+    **Note:** For a ConfigMap use `create` instead of `apply` as `kubectl` command. They have no "desired" state. If you need to change a ConfigMap, you delete and recreate it. 
 
 2. Apply the new MySQL configuration:
 
     ```
-    $ kubectl apply -f deploy/mysql-v3.yaml
+    kubectl apply -f deploy/mysql-v3.yaml
     ```
    
    Actually this will not change anything since the content of the variables is only used during initial startup when the MySQL setup is performed.
 
 3. Apply the new ToDo configuration:
     ```
-    $ kubectl apply -f deploy/todo-v3.yaml
+    kubectl apply -f deploy/todo-v3.yaml
     ```
 
 4. Test the app. You should see your previous items still there.

@@ -4,15 +4,15 @@ title: Overview, intial setup
 
 # Overview
 
-This hands-on lab is based on the [Docker Getting Started Tutorial](https://github.com/docker/getting-started). 
+This hands-on lab is building upon the [Docker 101](https://harald-u.github.io/docker-101/) workshop. 
 
-In this Docker tutorial, a Node.js based ToDo app is packaged as a Container image and then run on Docker, first stand-alone using a built-in database, and then as a multi-container app with docker-compose, running MySQL as database in a second container.
+In the Docker workshop, a Node.js based ToDo app is packaged as a Container image and then run on Docker, first stand-alone using a built-in database, and then as a multi-container app running MySQL as database in a second container.
 
 ![Agenda](docs/agenda.png)
 
-In this lab, we will use the information in the Docker commands of the tutorial to create equivalent Kubernetes configurations. 
+We will use the information contained in the Docker commands of the Docker 101 workshop to create equivalent Kubernetes configurations. 
 
-At one point in the Docker Getting Started Tutorial you publish the ToDo app container image to Docker Hub into your own repository. In this Kubernetes hands-on you are using my version of the getting-started image from my Docker Hub repository, but of course you can use your own.
+Building of Container Images is covered in the [Docker 101](https://harald-u.github.io/docker-101/docs/lab1#building-the-container-image). In this Kubernetes workshop we are using a Container image from my Docker Hub repository, but of course you can use your own.
 
 The instructions in this lab are based on **Minikube**. They should work -- with some modifications -- with the Kubernetes that is part of Docker Desktop, with K3d, Kind, or any other Kubernetes distribution. Your mileage may vary ...
 
@@ -22,17 +22,19 @@ The instructions in this lab are based on **Minikube**. They should work -- with
 * [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 * [git](https://git-scm.com/downloads)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* [stern](https://github.com/wercker/stern/releases) (rename stern_*_amd64[.exe] to stern[.exe])
+* [stern](https://github.com/wercker/stern/releases) 
 
-All executables must be copied to a location in your PATH (e.g. for Windows copy to "C:\Windows\System32").
+All executables must be copied to a location in your PATH.
+
+> **bwLehrpool:** All prerequisites are already installed in the bwLehrpool image.
 
 You may not know `stern`: it allows you to tail (follow) the logs of multiple pods on Kubernetes and multiple containers within the pod. It keeps displaying the logs when a pod is stopped and restarted. Each result is color coded for quicker debugging. 
 
 ## Get the code
 
 ```
-$ git clone https://github.com/Harald-U/kubernetes-handson.git
-$ cd kubernetes-handson
+git clone https://github.com/Harald-U/kubernetes-handson.git
+cd kubernetes-handson
 ```
 
 ## Prepare Minikube
@@ -40,17 +42,17 @@ $ cd kubernetes-handson
 This is the minimum setup:
 
 ```
-$ minikube start --cpus 2 --memory 4096 --driver docker
+minikube start --cpus 2 --memory 4096 --driver docker
 ```
 
 This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. On Linux and MacOS, Docker is the recommended driver for Minikube. 
 
 ## NOTE: bwLehrpool 
 
-There may be a "leftover" (and damaged) Minikube instance that was present when the VMware image for the Linux environment was built.  This may cause problems. Enter the following command before you start this workshop:
+> There may be a "leftover" (and damaged) Minikube instance that was present when the VMware image for the Linux environment was built.  This may cause problems. Enter the following command before you start this workshop:
 
 ```
-$ minikube delete
+minikube delete
 ```
 
 Output will be most likely something like this:
@@ -66,7 +68,7 @@ Please be aware that this command will delete any existing Minikube cluster!
 **bwLehrpool has sufficient RAM to increase memory for Minikube**, you can use this command instead:
 
 ```
-$ minikube start --cpus 2 --memory 6144 --driver docker
+minikube start --cpus 2 --memory 6144 --driver docker
 ```
 
 which will assign 6 GB of RAM.
