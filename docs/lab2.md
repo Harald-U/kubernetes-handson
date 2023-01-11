@@ -14,14 +14,14 @@ docker run -d \
     -v todo-mysql-data:/var/lib/mysql \
     -e MYSQL_ROOT_PASSWORD=secret \
     -e MYSQL_DATABASE=todos \
-    mysql:5.7
+    mysql:8
 ```
 
 This is the information from the docker command:
 
 * `network` and `network-alias` are not needed in Kubernetes
 * Kubernetes has `volumes`, too, but for simplicity we will start without volumes (but add them later)
-* The container image name is `mysql:5.7` (and is implicitely located on Docker Hub)
+* The container image name is `mysql:8` (and is implicitely located on Docker Hub)
 * There are two `environment variables`, MYSQL_ROOT_PASSWORD and MYSQL_DATABASE
 
 Using this information, the Kubernetes deployment and service configuration for MySQL looks like this ([deploy/mysql-v1.yaml](../deploy/mysql-v1.yaml)):
@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: mysql:8
         ports:
         - containerPort: 3306
         env:
@@ -99,8 +99,8 @@ It contains 2 key-value pairs in a YAML array called `env`.
     There will be a lot of output in the `stern` shell but it should state in the end:
 
     ```
-    mysql-fc666f95b-8kz7p mysql 2020-12-15T13:41:59.551732Z 0 [Note] mysqld: ready for connections.
-    mysql-fc666f95b-8kz7p mysql Version: '5.7.32'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+    mysql-7bf656bfc9-hpn7v mysql 2023-01-11T13:50:06.461633Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections.
+    Version: '8.0.31'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
     ```
 
 So MySQL is running in its own pod and waiting for a connection on port 3306 which is MySQL's default.

@@ -88,7 +88,7 @@ To use the image from Minikube's own repository, you will have to modify **all**
         imagePullPolicy: Never
 ```
 
-With `imagePullPolicy: Never` Kubernetes will use your locally stored image. Default is `imagePullPolicy: Always` which will try to pull the image from Docker Hub.
+With `imagePullPolicy: Never` Kubernetes will use your image locally stored in Minikube. The default however is `imagePullPolicy: Always` which will try to pull the image from Docker Hub which will fail because there is no such image on Docker Hub. The bad thing is that Kubernetes will only show a failed pod (container creation failed) and you will need to figure out why it fails ...
 
 **/FYI**
 

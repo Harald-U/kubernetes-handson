@@ -19,10 +19,10 @@ The instructions in this lab are based on **Minikube**. They should work -- with
 ## Prerequisites
 
 * [Docker](https://docs.docker.com/desktop/)
-* [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+* [Minikube](https://minikube.sigs.k8s.io/docs/start/) Version 1.28.0 (using Kubernetes 1.25.3)
 * [git](https://git-scm.com/downloads)
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-* [stern](https://github.com/wercker/stern/releases) 
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) Version 1.25.3
+* [stern](https://github.com/stern/stern/releases) 
 
 All executables must be copied to a location in your PATH.
 
@@ -39,15 +39,7 @@ cd kubernetes-handson
 
 ## Prepare Minikube
 
-This is the minimum setup:
-
-```
-minikube start --cpus 2 --memory 4096 --driver docker
-```
-
-This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. On Linux and MacOS, Docker is the recommended driver for Minikube. 
-
-## NOTE: bwLehrpool 
+**NOTE: bwLehrpool** 
 
 > There may be a "leftover" (and damaged) Minikube instance that was present when the VMware image for the Linux environment was built.  This may cause problems. Enter the following command before you start this workshop:
 
@@ -55,7 +47,7 @@ This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. O
 minikube delete
 ```
 
-Output will be most likely something like this:
+> Output will be most likely something like this:
 
 ```
 🔥  minikube" in docker wird gelöscht...
@@ -63,15 +55,25 @@ Output will be most likely something like this:
 💀  Removed all traces of the "minikube" cluster.
 ```
 
-Please be aware that this command will delete any existing Minikube cluster!
+>Please be aware that this command will delete any existing Minikube cluster!
 
-**bwLehrpool has sufficient RAM to increase memory for Minikube**, you can use this command instead:
+**On bwLehrpool or systems with sufficient RAM** start Minikube with this command:
 
 ```
 minikube start --cpus 2 --memory 6144 --driver docker
 ```
 
 which will assign 6 GB of RAM.
+
+**On memory constrained systems** use this minimum setup:
+
+```
+minikube start --cpus 2 --memory 4096 --driver docker
+```
+
+This starts a very small Minikube instance with 2 CPUs and a mere 4 GB of RAM. On Linux and MacOS, Docker is the recommended driver for Minikube. 
+
+
 
 ## Labs
 
