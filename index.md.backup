@@ -32,7 +32,7 @@ You may not know `stern`: it allows you to tail (follow) the logs of multiple po
 
 ## Get the code
 
-**Note: On bwLehrpool** change into the PERSISTENCE directory before cloning the repository with the following command.
+**Note: On bwLehrpool** change into the PERSISTENCE directory before cloning the repository in the next step.
 
 ```
 git clone https://github.com/Harald-U/kubernetes-handson.git
