@@ -6,16 +6,18 @@ show_downloads: False
 navigation:
   - title: Overview, intial setup
     url: /
-  - title: 1. Deploy ToDo app
-    url: docs/lab1
-  - title: 2. Deploy MySQL
+  - title: 1. Prepare the environment
+    url: docs/lab1  
+  - title: 2. Deploy ToDo app
     url: docs/lab2
-  - title: 3. Connect ToDo with MySQL using Environment Variables
+  - title: 3. Deploy MySQL
     url: docs/lab3
-  - title: 4. MySQL with Persistent Volumes
+  - title: 4. Connect ToDo with MySQL using Environment Variables
     url: docs/lab4
-  - title: 5. Connect ToDo with MySQL using ConfigMap
+  - title: 5. MySQL with Persistent Volumes
     url: docs/lab5
-  - title: 6. Connect ToDo with MySQL using ConfigMap and Secret
+  - title: 6. Connect ToDo with MySQL using ConfigMap
     url: docs/lab6
+  - title: 7. Connect ToDo with MySQL using ConfigMap and Secret
+    url: docs/lab7
 

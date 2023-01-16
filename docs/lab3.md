@@ -1,125 +1,110 @@
 ---
-title: 3. Connect ToDo with MySQL using Environment Variables
+title: 3. Deploy MySQL
 ---
 
-# Lab 3: Connect ToDo with MySQL using Environment Variables
+# Lab 3: Create MySQL deployment
 
+In the Docker 101 this is the command to start MySQL.
 
-This is the docker command from Docker 101 that will connect the ToDo app with MySQL.
-
-> Again: **Do not run this command!**
+> **Do not run this command!** It is only here for reference.
 
 ```
-docker run -dp 3000:3000 \
-  --name todo \
-  --network todo-app \
-  -e MYSQL_HOST=mysql \
-  -e MYSQL_USER=root \
-  -e MYSQL_PASSWORD=secret \
-  -e MYSQL_DB=todos \
-  todo-app
+docker run -d \
+    --network todo-app --network-alias mysql \
+    -v todo-mysql-data:/var/lib/mysql \
+    -e MYSQL_ROOT_PASSWORD=secret \
+    -e MYSQL_DATABASE=todos \
+    mysql:8
 ```
 
-* `network` is not used and needed in Kubernetes
-* There are now 4 environment variables that we will use
+This is the information from the docker command:
 
-Our deployment and service configuration looks like this now ([deploy/todo-v2.yaml](../deploy/todo-v2.yaml)):
+* `network` and `network-alias` are not needed in Kubernetes
+* Kubernetes has `volumes`, too, but for simplicity we will start without volumes (but add them later)
+* The container image name is `mysql:8` (and is implicitely located on Docker Hub)
+* There are two `environment variables`, MYSQL_ROOT_PASSWORD and MYSQL_DATABASE
+
+Using this information, the Kubernetes deployment and service configuration for MySQL looks like this ([deploy/mysql-v1.yaml](../deploy/mysql-v1.yaml)):
 
 ```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-app
+  name: mysql
   labels:
-    app: todo
+    app: mysql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todo
+      app: mysql
   template:
     metadata:
       labels:
-        app: todo
+        app: mysql
     spec:
       containers:
-      - name: todo
-        image: haraldu/todo-app:latest
+      - name: mysql
+        image: mysql:8
         ports:
-        - containerPort: 3000
+        - containerPort: 3306
         env:
-        - name: MYSQL_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
           value: secret
-        - name: MYSQL_DB
+        - name: MYSQL_DATABASE
           value: todos
-        - name: MYSQL_HOST
-          value: mysql
-        - name: MYSQL_USER
-          value: root
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: todo
+  name: mysql
 spec:
   selector:
-    app: todo
+    app: mysql
   type: NodePort
   ports:
     - protocol: TCP
-      port: 3000
+      port: 3306
 ```
 
-All that changed from `deploy/todo-v1.yaml` was to add the environment variables (`env:` section).
+This isn't too different from the todo deployment, the names and labels are changed, and of course the container image reference is different.
 
-But how will the ToDo app find the MySQL server/pod? The environment variable MYSQL_HOST seems a good pick but it contains only 'mysql'. How is this going to work?
+> **NOTE:** As you can see, we are creating a Kubernetes Deployment for MySQL. Deployments are typically used for stateless applications which a database like MySQL IS NOT. Stateful applications like a database should use Kubernetes Stateful Sets, instead. What we build here is a demo scenario and for a demo it is sufficient (and easier) to use a Deployment. For a real production MySQL environment with primary and secondary instances and replication you would use a MySQL Kubernetes operator which in turn would most likely result in MySQL StatefulSets. For examples see [Percona Operators](https://www.percona.com/software/percona-kubernetes-operators).
 
-When we created the MySQL Kubernetes service definition with the name 'mysql', this name 'mysql' was registered with the Kubernetes DNS (name service). Our two pods and two services share the same [Kubernetes namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) ("default") and therefore the MySQL service doesn't need any further qualification. Apps in the same namespace can simply call other apps or send requests to them using their service's name only. Apps in different namespaces can use the fully qualified name: [servicename].[namespacename].cloud.local (e.g. `mysql.default.cloud.local`). 
+The section for environment variables is new:
 
-1. Deploy the configuration to Kubernetes
+```
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: secret
+        - name: MYSQL_DATABASE
+          value: todos
+```
 
-    Reuse the second shell but redirect `stern` to the Todo app:
+It contains 2 key-value pairs in a YAML array called `env`.
 
+1. Deploy the app and check the logs
+
+    In another, second shell start:
     ```
-    stern todo
-    ```
-
-    Then, in the first shell, deploy the new Todo version:
-
-    ```
-    kubectl apply -f deploy/todo-v2.yaml
-    ```
-
-    `stern` output shows:
-
-    ```
-    + todo-app-f8549b989-hhvj6 › todo
-    todo-app-f8549b989-hhvj6 todo Using sqlite database at /etc/todos/todo.db
-    todo-app-f8549b989-hhvj6 todo Listening on port 3000
-    + todo-app-744bcb9777-vjl7c › todo
-    todo-app-744bcb9777-vjl7c todo Waiting for mysql:3306.
-    todo-app-744bcb9777-vjl7c todo Connected!
-    todo-app-744bcb9777-vjl7c todo Connected to mysql db at host mysql
-    todo-app-744bcb9777-vjl7c todo Listening on port 3000
-    - todo-app-f8549b989-hhvj6
+    stern mysql
     ```
 
-    The first pod, todo-app-f8549b989-hhvj6, was connected to sqlite. 
-    A new pod, todo-app-744bcb9777-vjl7c, is started (indicated by '+') and successfully connects to MySQL.
-    The last message (preceded with '-') indicates that the first pod, todo-app-f8549b989-hhvj6, has terminated.
-
-    > With the configuration file todo-v2.yaml you "declared a new intent" regarding the state of the Todo app and by "apply"ing it, you made this known to Kubernetes. Kubernetes then changed the existing state of the Todo application to match the desired state by starting a new pod and deleting the old one. This approach is called "declarative". 
-    > With Docker, you used an "imperative" approach: tell Docker to stop the old container ("docker stop ..."), then delete the old container ("docker rm ..."), then start the new container ("docker run ..."). 
-
-
-2. Test the app in your browser 
+    and in your first shell issue:
 
     ```
-    minikube service todo
+    kubectl apply -f deploy/mysql-v1.yaml
     ```
 
-    Make sure to add some items!
+    There will be a lot of output in the `stern` shell but it should state in the end:
+
+    ```
+    mysql-7bf656bfc9-hpn7v mysql 2023-01-11T13:50:06.461633Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections.
+    Version: '8.0.31'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+    ```
+
+So MySQL is running in its own pod and waiting for a connection on port 3306 which is MySQL's default.
 
 ---
 
-**Next Step:** [MySQL with Persistent Volumes](lab4.md) 
+**Next Step:** [Connect ToDo with MySQL using Environment Variables](lab4.md) 

@@ -1,112 +1,22 @@
 ---
-title: 5. Connect ToDo with MySQL using ConfigMap
+title: 5. MySQL with Persistent Volumes
 ---
 
-# Lab 5: Connect ToDo with MySQL using ConfigMap
+# Lab 5: MySQL with Persistent Volumes
 
-Both, ToDo and MySQL use environment variables.
+Our initial MySQL deployment in Lab 2 has no external storage, instead it stores data on the filesystem within the pod. This doesn't really make sense for a database: When the pod is recreated for any reason, the data is gone!
 
-- mysql:
-  - MYSQL_ROOT_PASSWORD = secret
-  - MYSQL_DATABASE =todos
-- todo:
-  - MYSQL_PASSWORD = secret
-  - MYSQL_DB = todos
-  - MYSQL_HOST = mysql
-  - MYSQL_USER = root
+Kubernetes has a method to create external storage using two object types: PersistentVolumes and PersistentVolumeClaims. This is their definition in the Kubernetes docs:
 
-Two of them serve identical purposes, password and database, but are named differently.
+_A [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PV) is a piece of storage in the cluster that has been manually provisioned by an administrator, or dynamically provisioned by Kubernetes using a [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes)._
 
-Configuration parameters like these should be stored externally **(-> 12-Factor Apps!)** in [Kubernetes ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/). 
+_A [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) (PVC) is a request for storage by a user that can be fulfilled by a PV._ 
 
-There are different ways to create a configmap. We use a simple version for our purpose which looks like this ([deploy/configmap-v1.yaml](../deploy/configmap-v1.yaml)):
+_PersistentVolumes and PersistentVolumeClaims are **independent from Pod lifecycles and preserve data through restarting, rescheduling, and even deleting Pods**._
 
-```
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: mysql-config
-  labels:
-    app: todo  
-data:
-  MYSQL_PASSWORD: "secret"
-  MYSQL_DB: "todos"
-  MYSQL_HOST: "mysql"
-  MYSQL_USER: "root"
-```
+Minikube has one built-in StorageClass of type [HostPath](https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/). It will dynamically create the PersistentVolume (PV) for every new PersistentVolumeClaim (PVC).
 
-It has a name, mysql-config, and in the data array are for key value pairs. I used the variable names that the ToDo app requires, but in fact they could be anything meaningful.
-
-In the Kubernetes deployment configuration, the config map is used in the environment area. 
-
-This is the old version, using environment variables:
-
-```
-env:
-- name: MYSQL_PASSWORD
-  value: secret
-```           
-
-And this is an example referencing a config map:
-
-```
-env:
-- name: MYSQL_PASSWORD
-    valueFrom:
-    configMapKeyRef:
-        name: mysql-config
-        key: MYSQL_PASSWORD
-```
-
-The ToDo configuration is this ([deploy/todo-v3.yaml](../deploy/todo-v3.yaml)):
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: todo-app
-  labels:
-    app: todo
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: todo
-  template:
-    metadata:
-      labels:
-        app: todo
-    spec:
-      containers:
-      - name: todo
-        image: haraldu/todo-app:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_PASSWORD
-        - name: MYSQL_DB
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_DB
-        - name: MYSQL_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_HOST
-        - name: MYSQL_USER
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_USER
----
-```
-
-The MySQL configuration is this ([deploy/mysql-v3.yaml](../deploy/mysql-v2.yaml)):
+The new Kubernetes configuration is in [deploy/mysql-v2.yaml](../deploy/mysql-v2.yaml). It contains a new section for the PersistentVolumeClaim (PVC):
 
 ```
 apiVersion: v1
@@ -121,7 +31,21 @@ spec:
   resources:
     requests:
       storage: 1Gi
----
+```
+
+In Kubernetes there are 3 possible accessModes:
+
+- ReadWriteOnce -- the volume can be mounted as read-write by a single node
+- ReadOnlyMany -- the volume can be mounted read-only by many nodes
+- ReadWriteMany -- the volume can be mounted as read-write by many nodes
+
+The Minikube storage class HostPath only supports ReadWriteOnce.
+
+In our example, 1 GB of storage is requested.
+
+The new deployment configuration looks like this:
+
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -145,61 +69,76 @@ spec:
         - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_PASSWORD
+          value: secret
         - name: MYSQL_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: MYSQL_DB
+          value: todos
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-pv-claim                    
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-spec:
-  selector:
-    app: mysql
-  type: NodePort
-  ports:
-    - port: 3306
+          claimName: mysql-pv-claim
 ```
 
-Notice that we read e.g. MYSQL_PASSWORD from the configmap but assign it to MYSQL_ROOT_PASSWORD.
+* There is a new 'volumes' section that maps the PVC to a name in the deployment.
+* The 'containers' definition mounts a path within the pod (/var/lib/mysql) onto that PVC. 
 
-1. Create the ConfigMap:
+When the pod is started for the first time, a claim is made for storage and Kubernetes/Minikube tries to satisfy this claim by creating a PV. If it cannot create the PV -- maybe there is no more storage available -- the pod will not start.
 
-    ```
-    kubectl create -f deploy/configmap-v1.yaml
-    ```
-
-    **Note:** For a ConfigMap use `create` instead of `apply` as `kubectl` command. They have no "desired" state. If you need to change a ConfigMap, you delete and recreate it. 
-
-2. Apply the new MySQL configuration:
+1. Redeploy MySQL:
 
     ```
-    kubectl apply -f deploy/mysql-v3.yaml
-    ```
-   
-   Actually this will not change anything since the content of the variables is only used during initial startup when the MySQL setup is performed.
-
-3. Apply the new ToDo configuration:
-    ```
-    kubectl apply -f deploy/todo-v3.yaml
+    kubectl apply -f deploy/mysql-v2.yaml
     ```
 
-4. Test the app. You should see your previous items still there.
+2. Check if the PVC has been created:
+
+    ```
+    kubectl get pvc
+
+    NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    mysql-pv-claim   Bound    pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   1Gi        RWO            standard       7m16s
+    ```
+
+3. Check if the PV has been created:
+
+    ```
+    kubectl get pv
+
+    NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                    STORAGECLASS   REASON   AGE
+    pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   1Gi        RWO            Delete           Bound    default/mysql-pv-claim   standard                8m57s
+    ```
+
+4. The ToDo app will have lost connection with MySQL and its code isn't resilient enough to detect this itself. Therefore we need to restart the pod to force a new connection. 
+
+    There is no "restart" for Pods, the solution is to delete the Pod and have Kubernetes recreate it:
+
+    ```
+    kubectl get pod
+
+    NAME                        READY   STATUS    RESTARTS   AGE
+    mysql-5bfb9886b6-j2c8h      1/1     Running   0          67s
+    todo-app-744bcb9777-v8v64   1/1     Running   0          2m20s
+    ```
+
+    ```
+    kubectl delete pod todo-app-744bcb9777-v8v64
+
+    pod "todo-app-744bcb9777-v8v64" deleted
+    ```
+
+    > The name of your todo pod will be different, of course!
+
+5. Test the app. If you closed your browser, reopen the ToDo app with
+
+    ```
+    minikube service todo
+    ```
+
+    Make sure to add items.
+
 
 ---
 
-**Last Step:** [Connect ToDo with MySQL using ConfigMap and Secret](lab6.md) 
-
+**Next Step:** [Connect ToDo with MySQL using ConfigMap](lab6.md) 

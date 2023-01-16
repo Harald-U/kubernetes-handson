@@ -1,94 +1,205 @@
 ---
-title: 6. Connect ToDo with MySQL using ConfigMap and Secret
+title: 6. Connect ToDo with MySQL using ConfigMap
 ---
 
-# Lab 6: Connect ToDo with MySQL using ConfigMap and Secret
+# Lab 6: Connect ToDo with MySQL using ConfigMap
 
-It is bad practice to store sensitive data, such as passwords, in plain text on a container. However, containers may need this data to perform operations like connecting with other systems. Kubernetes provides an object called Secret that can be used to store sensitive data.
+Both, ToDo and MySQL use environment variables.
 
-Kubernetes secrets are not really safe, they are base64 encoded, not encrypted. You will need to take additional measures like adding a [Key Management Service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/) to your Kubernetes cluster to enhance protection. This would be way out of scope for this tutorial. Commercial Cloud providers typically have out-of-the-box solutions, here is the documentation for [IBM Cloud](https://cloud.ibm.com/docs/containers?topic=containers-encryption&locale=en).
+- mysql:
+  - MYSQL_ROOT_PASSWORD = secret
+  - MYSQL_DATABASE =todos
+- todo:
+  - MYSQL_PASSWORD = secret
+  - MYSQL_DB = todos
+  - MYSQL_HOST = mysql
+  - MYSQL_USER = root
 
-Our example uses the password 'secret' for MySQL. To base64 encode it, you can submit the following command:
+Two of them serve identical purposes, password and database, but are named differently.
+
+Configuration parameters like these should be stored externally **(-> 12-Factor Apps!)** in [Kubernetes ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/). 
+
+There are different ways to create a configmap. We use a simple version for our purpose which looks like this ([deploy/configmap-v1.yaml](../deploy/configmap-v1.yaml)):
 
 ```
-$ echo -n "secret" | base64
-c2VjcmV0
-```
-
-- '-n' will prevent a newline character.
-- Quotation marks " " are required and not considered part of the password. 
-- The result is not a hash, it will always be the same. (A hash would be random.)
-
-This is the definition of our secret ([deploy/secret.yaml](../deploy/secret.yaml)):
-
-```
+kind: ConfigMap
 apiVersion: v1
-kind: Secret
 metadata:
-  name: mysql-secret
-type: Opaque
+  name: mysql-config
+  labels:
+    app: todo  
 data:
-  password: c2VjcmV0
+  MYSQL_PASSWORD: "secret"
+  MYSQL_DB: "todos"
+  MYSQL_HOST: "mysql"
+  MYSQL_USER: "root"
 ```
 
-Create it with:
+It has a name, mysql-config, and in the data array are for key value pairs. I used the variable names that the ToDo app requires, but in fact they could be anything meaningful.
+
+In the Kubernetes deployment configuration, the config map is used in the environment area. 
+
+This is the old version, using environment variables:
 
 ```
-kubectl create -f deploy/secret.yaml
-```
+env:
+- name: MYSQL_PASSWORD
+  value: secret
+```           
 
-Using this type of secret is almost the same like using the configmap we created.
-
-This is the relevant section from [deploy/mysql-v4.yaml](../deploy/mysql-v4.yaml):
-
-```
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
-```
-
-And this is the relevant section from [deploy/todo-v4.yaml](../deploy/todo-v4.yaml):
+And this is an example referencing a config map:
 
 ```
+env:
+- name: MYSQL_PASSWORD
+    valueFrom:
+    configMapKeyRef:
+        name: mysql-config
+        key: MYSQL_PASSWORD
+```
+
+The ToDo configuration is this ([deploy/todo-v3.yaml](../deploy/todo-v3.yaml)):
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app
+  labels:
+    app: todo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo
+  template:
+    metadata:
+      labels:
+        app: todo
+    spec:
+      containers:
+      - name: todo
+        image: haraldu/todo-app:latest
+        ports:
+        - containerPort: 3000
         env:
         - name: MYSQL_PASSWORD
           valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DB
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_DB
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_HOST
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_USER
+---
 ```
 
-Apply them as usual:
+The MySQL configuration is this ([deploy/mysql-v3.yaml](../deploy/mysql-v2.yaml)):
 
 ```
-kubectl apply -f deploy/mysql-v4.yaml
-kubectl apply -f deploy/todo-v4.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: MYSQL_DB
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim                    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  type: NodePort
+  ports:
+    - port: 3306
 ```
 
-Test the app as always. Your previously entered items should still be visible.
+Notice that we read e.g. MYSQL_PASSWORD from the configmap but assign it to MYSQL_ROOT_PASSWORD.
+
+1. Create the ConfigMap:
+
+    ```
+    kubectl create -f deploy/configmap-v1.yaml
+    ```
+
+    **Note:** For a ConfigMap use `create` instead of `apply` as `kubectl` command. They have no "desired" state. If you need to change a ConfigMap, you delete and recreate it. 
+
+2. Apply the new MySQL configuration:
+
+    ```
+    kubectl apply -f deploy/mysql-v3.yaml
+    ```
+   
+   Actually this will not change anything since the content of the variables is only used during initial startup when the MySQL setup is performed.
+
+3. Apply the new ToDo configuration:
+    ```
+    kubectl apply -f deploy/todo-v3.yaml
+    ```
+
+4. Test the app. You should see your previous items still there.
 
 ---
 
-This concludes our hands-on tutorial. 
-
-You have seen:
-* How to deploy applications on Kubernetes using Deployments and Services
-* How to expose services with Nodeports
-* How to add external storage (to a database) using PersistentVolumes and PersistentVolumeClaims
-* How to externalize configuration with ConfigMaps and Secrets
-
-
-# Clean up
-
-If you no longer need your Minikube cluster you can simply delete it with:
-
-```
-minikube delete
-```
-
-**The End** 
-
+**Last Step:** [Connect ToDo with MySQL using ConfigMap and Secret](lab7.md) 
 
