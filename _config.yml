@@ -3,7 +3,7 @@ title: Kubernetes Hands-on
 updated: 12.1.2023
 show_downloads: False
 navigation:
-  - title: Overview, intial setup
+  - title: Overview
     url: /
   - title: 1. Prepare the environment
     url: docs/lab1  
