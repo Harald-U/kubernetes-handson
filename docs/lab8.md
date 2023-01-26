@@ -12,7 +12,7 @@ There is a graphical tool that comes with some Kubernetes distributions. In Mini
 minikube dashboard
 ```
 
-It takes a moment to start, the it will open your browser:
+It takes a moment to start, then it will open your browser:
 
 ![](dashboard.png)
 
