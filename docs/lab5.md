@@ -110,7 +110,7 @@ When the pod is started for the first time, a claim is made for storage and Kube
     pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   1Gi        RWO            Delete           Bound    default/mysql-pv-claim   standard                8m57s
     ```
 
-4. The ToDo app will have lost connection with MySQL and its code isn't resilient enough to detect this itself. Therefore we need to restart the pod to force a new connection. 
+4. If you refresh the ToDo app in the browser, it may have lost connection with MySQL. If this happened, we need to restart the pod to force a new connection. 
 
     There is no "restart" for Pods, the solution is to delete the Pod and have Kubernetes recreate it:
 
@@ -130,13 +130,15 @@ When the pod is started for the first time, a claim is made for storage and Kube
 
     > The name of your todo pod will be different, of course!
 
-5. Test the app. If you closed your browser, reopen the ToDo app with
+5. Test the app. 
+   
+   If you closed your browser, reopen the ToDo app with
 
     ```
     minikube service todo
     ```
 
-    Make sure to add items.
+    There will be no items, make sure to add some new ones.
 
 
 ---

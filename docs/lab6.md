@@ -201,5 +201,5 @@ Notice that we read e.g. MYSQL_PASSWORD from the configmap but assign it to MYSQ
 
 ---
 
-**Last Step:** [Connect ToDo with MySQL using ConfigMap and Secret](lab7.md) 
+**Next Step:** [Connect ToDo with MySQL using ConfigMap and Secret](lab7.md) 
 

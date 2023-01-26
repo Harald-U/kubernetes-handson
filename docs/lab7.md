@@ -80,15 +80,10 @@ You have seen:
 * How to add external storage (to a database) using PersistentVolumes and PersistentVolumeClaims
 * How to externalize configuration with ConfigMaps and Secrets
 
+---
 
-# Clean up
+**Last Step:** [Kubernetes Dashboard](lab8.md) 
 
-If you no longer need your Minikube cluster you can simply delete it with:
 
-```
-minikube delete
-```
-
-**The End** 
 
 
