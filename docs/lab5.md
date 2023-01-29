@@ -110,7 +110,7 @@ When the pod is started for the first time, a claim is made for storage and Kube
     pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   1Gi        RWO            Delete           Bound    default/mysql-pv-claim   standard                8m57s
     ```
 
-4. If you refresh the ToDo app in the browser, it may have lost connection with MySQL. If this happened, we need to restart the pod to force a new connection. 
+4. If you refresh the ToDo app in the browser it may have lost connection with MySQL, the browser windows shows `Loading...`or something similar and eventually terminates. If this happened, we need to restart the pod to force a new connection. 
 
     There is no "restart" for Pods, the solution is to delete the Pod and have Kubernetes recreate it:
 
