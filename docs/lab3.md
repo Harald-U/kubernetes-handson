@@ -96,7 +96,7 @@ It contains 2 key-value pairs in a YAML array called `env`.
     kubectl apply -f deploy/mysql-v1.yaml
     ```
 
-    There will be a lot of output in the `stern` shell but it should state in the end:
+    It will take some time (the MySQL image needs to be downloaded) but then there will be a lot of output in the `stern` shell. It should state in the end:
 
     ```
     mysql-7bf656bfc9-hpn7v mysql 2023-01-11T13:50:06.461633Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections.
