@@ -210,10 +210,10 @@ Check with:
 kubectl get service todo
 
 NAME   TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-todo   NodePort   10.106.198.138   <none>        3000:32173/TCP   11s
+todo   NodePort   10.106.198.138   <none>        3000:30078/TCP   11s
 ```
 
-Notice in the PORT(S) column the notation `3000:32173`. This means that the container port 3000 is mapped to NodePort 32173 on the external IP address of your Kubernetes cluster = Minikube.
+Notice in the PORT(S) column the notation `3000:30078`. This means that the container port 3000 is mapped to NodePort 30078 on the external IP address of your Kubernetes cluster = Minikube.
 
 Minikube provides an easy way to access the NodePort:
 
@@ -223,12 +223,13 @@ minikube service todo
 
 This command will open your browser to the correct IP address and port. In addition, on Mac and Windows it will first create a tunnel into the VM running your Minikube cluster, giving you network access to it.
 
+  ![](todo-app.png)
+  
+
 ---
 
 
 **Note:** If you (or Kubernetes) redeploy the app, all data is gone because it isn't persisted, the app uses a built-in sqlite database which resides inside the container, stores its data inside the container, which is destroyed on redeploy.
-
-  ![](todo-app.png)
 
 ---
 
