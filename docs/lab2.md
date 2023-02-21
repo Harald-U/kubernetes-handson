@@ -140,7 +140,11 @@ You can use Kubernetes [port-forwarding](https://kubernetes.io/docs/tasks/access
 
     ```
     kubectl get pod
+    ```
 
+    Result should look similar to this:
+
+    ``` 
     NAME                       READY   STATUS    RESTARTS   AGE
     todo-app-7cdfc755c-cq2g2   1/1     Running   0          3m10s
     ```
@@ -151,7 +155,7 @@ You can use Kubernetes [port-forwarding](https://kubernetes.io/docs/tasks/access
     kubectl port-forward todo-app-7cdfc755c-cq2g2 3000:3000
     ```
 
-    This command appears to do nothing and will block your terminal session as long as you need the "port forwarding". Use `Ctl-C` or `Cmd-C` to termonate the command.  
+    This command appears to do nothing and will block your terminal session as long as you need the "port forwarding". Use `Ctl-C` or `Cmd-C` to terminate the command.  
 
 3. Open your browser on http://localhost:3000
 
@@ -165,7 +169,7 @@ There must be a better way to do this! Indeed, it is:
 
 #### Method 2. Kubernetes Service 
 
-Kubernetes Pods are created and destroyed to match the desired state of your cluster. Pods are nonpermanent resources. If you use a Deployment to run your app, it can create and destroy Pods dynamically.
+Kubernetes Pods are created and destroyed to match the desired state of your cluster. Pods are non permanent resources. If you use a Deployment to run your app, it can create and destroy Pods dynamically.
 
 Each Pod gets its own distinct name and IP address, however in a Deployment, the set of Pods running in one moment in time could be different from the set of Pods running that application a moment later.
 
