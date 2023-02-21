@@ -151,6 +151,8 @@ You can use Kubernetes [port-forwarding](https://kubernetes.io/docs/tasks/access
     kubectl port-forward todo-app-7cdfc755c-cq2g2 3000:3000
     ```
 
+    This command appears to do nothing and will block your terminal session as long as you need the "port forwarding". Use `Ctl-C` or `Cmd-C` to termonate the command.  
+
 3. Open your browser on http://localhost:3000
 
 > **What happens if you redeploy or restart the pod?** Your pod gets a new name. This means you have to determine the new name and change your port-forwarding command accordingly.
