@@ -124,6 +124,8 @@ With `imagePullPolicy: Never` Kubernetes will use your image locally stored in M
 
     This means the app started on port 3000 and is using sqlite.
 
+    **Note:"** Exit `stern` with `Ctl-C`or `Cmd-C`.
+
 ## Accessing the ToDo app
 
 Now how can you access the ToDo app?
