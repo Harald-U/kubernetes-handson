@@ -48,11 +48,13 @@ spec:
 
 **FYI** 
 
-You can use your own "todo-app" container image, the one you created in the last hands-on (Docker 101 Workshop). There are two methods:
+This section is **For Your Information** only, don't use it during this workshop. There is no need to build your own container image. This is for your reference in case you need to make your own container image available to Minikube without using an external repository like Docker Hub.
+
+There are two methods to load a local image into Minikube:
 
 * **Method 1**
 
-  If you already built the image in your local Docker, the following command will load this container image from your local Docker image store into Minikube's Docker image store:
+  If you already built the image (`todo:latest`) in your local Docker environment, the following command will load this container image from your local Docker image store into Minikube's Docker image store:
 
   ```
   minikube image load todo-app:latest
@@ -78,7 +80,7 @@ You can use your own "todo-app" container image, the one you created in the last
   Now simply build your image using the usual `docker build` command. The docker CLI will transmit the build context into Minikube and Minikube's Docker will build the image and store it within Minikube.
 
 
-To use the image from Minikube's own repository, you will have to modify **all** deployments for the "To-Do" app to use the local version of the image and change the ImagePull Policy to 'Never':
+To use the image from Minikube's own repository, you will have to modify **all** deployments for your app to use the Minikube local version of the image and change the ImagePull Policy to 'Never':
 
 ```
     spec:
