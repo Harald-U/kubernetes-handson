@@ -4,7 +4,7 @@ title: 5. MySQL with Persistent Volumes
 
 # Lab 5: MySQL with Persistent Volumes
 
-Our initial MySQL deployment in Lab 2 has no external storage, instead it stores data on the filesystem within the pod. This doesn't really make sense for a database: When the pod is recreated for any reason, the data is gone!
+Our MySQL deployment in Lab 3 and 4 has no external storage, instead it stores data on the filesystem within the pod. This doesn't really make sense for a database: When the pod is recreated for any reason, the data is gone!
 
 Kubernetes has a method to create external storage using two object types: PersistentVolumes and PersistentVolumeClaims. This is their definition in the Kubernetes docs:
 

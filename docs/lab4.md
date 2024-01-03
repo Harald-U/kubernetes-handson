@@ -5,7 +5,7 @@ title: 4. Connect ToDo with MySQL using Environment Variables
 # Lab 4: Connect ToDo with MySQL using Environment Variables
 
 
-This is the docker command from Docker 101 that will connect the ToDo app with MySQL.
+This was the docker command from the Docker 101 workshop that will connect the ToDo app with MySQL.
 
 > Again: **Do not run this command!**
 
@@ -21,7 +21,7 @@ docker run -dp 3000:3000 \
 ```
 
 * `network` is not used and needed in Kubernetes
-* There are now 4 environment variables that we will use
+* There are 4 environment variables that we have to implement
 
 Our deployment and service configuration looks like this now ([deploy/todo-v2.yaml](../deploy/todo-v2.yaml)):
 

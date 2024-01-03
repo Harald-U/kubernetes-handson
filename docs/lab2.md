@@ -4,7 +4,7 @@ title: 2. Deploy ToDo app
 
 # Lab 2: Deploy ToDo app 
 
-In the original Docker 101 workshop, this is the command to deploy the ToDo app stand-alone without database.
+In the previous Docker 101 workshop, this was the command to deploy the ToDo app stand-alone without database.
 
 > **Do not run this command!** It is only here for reference!
 

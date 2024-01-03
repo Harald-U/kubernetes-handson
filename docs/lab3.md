@@ -4,7 +4,7 @@ title: 3. Deploy MySQL
 
 # Lab 3: Create MySQL deployment
 
-In the Docker 101 this is the command to start MySQL.
+In the Docker 101 workshop this was the command to start MySQL.
 
 > **Do not run this command!** It is only here for reference.
 

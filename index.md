@@ -19,9 +19,9 @@ The instructions in this lab are based on **Minikube**. They should work -- with
 ## Prerequisites
 
 * [Docker](https://docs.docker.com/desktop/)
-* [Minikube](https://minikube.sigs.k8s.io/docs/start/) Version 1.28.0 (using Kubernetes 1.25.3)
+* [Minikube](https://minikube.sigs.k8s.io/docs/start/) Version 1.32.0 (using Kubernetes 1.28.3)
 * [git](https://git-scm.com/downloads)
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) Version 1.25.3
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) Version 1.29
 * [stern](https://github.com/stern/stern/releases) 
 
 All executables must be copied to a location in your PATH.
