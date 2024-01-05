@@ -114,7 +114,7 @@ With `imagePullPolicy: Never` Kubernetes will use your image locally stored in M
     todo-app-f8549b989-9cbdr   1/1     Running   0          44s
     ```
 
-3. Check the logs with `stern` (or `podtail`)
+3. Check the logs with `stern` 
 
     ```
     stern todo

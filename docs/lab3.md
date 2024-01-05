@@ -67,7 +67,7 @@ spec:
       port: 3306
 ```
 
-This isn't too different from the todo deployment, the names and labels are changed, and of course the container image reference is different.
+This isn't too different from the todo deployment, the names and labels are changed, and of course the container image reference is different. Also Kubernetes Deployment and Service are handled in a single file which could be simpler to handle.
 
 > **NOTE:** As you can see, we are creating a Kubernetes Deployment for MySQL. Deployments are typically used for stateless applications which a database like MySQL IS NOT. Stateful applications like a database should use Kubernetes Stateful Sets, instead. What we build here is a demo scenario and for a demo it is sufficient (and easier) to use a Deployment. For a real production MySQL environment with primary and secondary instances and replication you would use a MySQL Kubernetes operator which in turn would most likely result in MySQL StatefulSets. For examples see [Percona Operators](https://www.percona.com/software/percona-kubernetes-operators).
 
