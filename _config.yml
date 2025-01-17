@@ -1,6 +1,6 @@
 theme: jekyll-theme-minimal
 title: Kubernetes Hands-on
-updated: 5.1.2024
+updated: 17.1.2025
 show_downloads: False
 navigation:
   - title: Overview
@@ -21,4 +21,3 @@ navigation:
     url: docs/lab7
   - title:   8. Kubernetes Dashboard
     url: docs/lab8
-

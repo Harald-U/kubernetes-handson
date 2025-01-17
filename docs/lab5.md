@@ -30,7 +30,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 100Mi
 ```
 
 In Kubernetes there are 3 possible accessModes:
@@ -41,7 +41,7 @@ In Kubernetes there are 3 possible accessModes:
 
 The Minikube storage class HostPath only supports ReadWriteOnce.
 
-In our example, 1 GB of storage is requested.
+In our example, 100 MB of storage is requested (100Mi).
 
 The new deployment configuration looks like this:
 
@@ -98,7 +98,7 @@ When the pod is started for the first time, a claim is made for storage and Kube
     kubectl get pvc
 
     NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-    mysql-pv-claim   Bound    pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   1Gi        RWO            standard       7m16s
+    mysql-pv-claim   Bound    pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   100Mi      RWO            standard       7m16s
     ```
 
 3. Check if the PV has been created:
@@ -107,7 +107,7 @@ When the pod is started for the first time, a claim is made for storage and Kube
     kubectl get pv
 
     NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                    STORAGECLASS   REASON   AGE
-    pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   1Gi        RWO            Delete           Bound    default/mysql-pv-claim   standard                8m57s
+    pvc-ba7114e0-ad6a-4427-8814-3c3f681c94b0   100Mi      RWO            Delete           Bound    default/mysql-pv-claim   standard                8m57s
     ```
 
 4. If you refresh the ToDo app in the browser it may have lost connection with MySQL, the browser windows shows `Loading...`or something similar and eventually terminates. If this happened, we need to restart the pod to force a new connection. 
