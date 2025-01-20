@@ -8,15 +8,15 @@ Our MySQL deployment in Lab 3 and 4 has no external storage, instead it stores d
 
 Kubernetes has a method to create external storage using two object types: PersistentVolumes and PersistentVolumeClaims. This is their definition in the Kubernetes docs:
 
-_A [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PV) is a piece of storage in the cluster that has been manually provisioned by an administrator, or dynamically provisioned by Kubernetes using a [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes)._
+_A [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/){:target="_blank"} (PV) is a piece of storage in the cluster that has been manually provisioned by an administrator, or dynamically provisioned by Kubernetes using a [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes)._
 
-_A [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) (PVC) is a request for storage by a user that can be fulfilled by a PV._ 
+_A [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims){:target="_blank"} (PVC) is a request for storage by a user that can be fulfilled by a PV._ 
 
 _PersistentVolumes and PersistentVolumeClaims are **independent from Pod lifecycles and preserve data through restarting, rescheduling, and even deleting Pods**._
 
-Minikube has one built-in StorageClass of type [HostPath](https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/). It will dynamically create the PersistentVolume (PV) for every new PersistentVolumeClaim (PVC).
+Minikube has one built-in StorageClass of type [HostPath](https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/){:target="_blank"}. It will dynamically create the PersistentVolume (PV) for every new PersistentVolumeClaim (PVC).
 
-The new Kubernetes configuration is in [deploy/mysql-v2.yaml](../deploy/mysql-v2.yaml). It contains a new section for the PersistentVolumeClaim (PVC):
+The new Kubernetes configuration is in [deploy/mysql-v2.yaml](../deploy/mysql-v2.yaml){:target="_blank"}. It contains a new section for the PersistentVolumeClaim (PVC):
 
 ```
 apiVersion: v1

@@ -24,7 +24,7 @@ This is the information from the docker command:
 * The container image name is `mysql:8` (and is implicitely located on Docker Hub)
 * There are two `environment variables`, MYSQL_ROOT_PASSWORD and MYSQL_DATABASE
 
-Using this information, the Kubernetes deployment and service configuration for MySQL looks like this ([deploy/mysql-v1.yaml](../deploy/mysql-v1.yaml)):
+Using this information, the Kubernetes deployment and service configuration for MySQL looks like this ([deploy/mysql-v1.yaml](../deploy/mysql-v1.yaml){:target="_blank"}):
 
 ```
 apiVersion: apps/v1

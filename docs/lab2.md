@@ -15,7 +15,7 @@ docker run -dp 3000:3000 todo-app
 * `todo-app` is the name of the container image that was created when following the Docker tutorial.
 * `-p 3000:3000` maps Container port 3000 on local port 3000.
 
-An equivalent Kubernetes deployment would look like this (file [deploy/todo-v1.yaml](../deploy/todo-v1.yaml)):
+An equivalent Kubernetes deployment would look like this (file [deploy/todo-v1.yaml](../deploy/todo-v1.yaml){:target="_blank"}):
 
 ```
 apiVersion: apps/v1
@@ -134,7 +134,7 @@ Now how can you access the ToDo app?
 
 #### Method 1: Port-Forwarding
 
-You can use Kubernetes [port-forwarding](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/#forward-a-local-port-to-a-port-on-the-pod) to access a specific pod. It is for testing purposes, only.
+You can use Kubernetes [port-forwarding](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/#forward-a-local-port-to-a-port-on-the-pod){:target="_blank"} to access a specific pod. It is for testing purposes, only.
 
 1. Determine the name of the pod (the name of the pod will be different for you):
 
@@ -179,7 +179,7 @@ Enter *Services*.
  
 In Kubernetes, a Service is an abstraction which defines a logical set of Pods and a policy by which to access them. The set of Pods targeted by a Service is usually determined by a selector. The Service also provides a defined name.
 
-This is the Service definition of the ToDo app (file [deploy/todo-service.yaml](../deploy/todo-service.yaml)):
+This is the Service definition of the ToDo app (file [deploy/todo-service.yaml](../deploy/todo-service.yaml){:target="_blank"}):
 
 ```
 apiVersion: v1

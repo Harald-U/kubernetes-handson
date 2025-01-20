@@ -23,7 +23,7 @@ docker run -dp 3000:3000 \
 * `network` is not used and needed in Kubernetes
 * There are 4 environment variables that we have to implement
 
-Our deployment and service configuration looks like this now ([deploy/todo-v2.yaml](../deploy/todo-v2.yaml)):
+Our deployment and service configuration looks like this now ([deploy/todo-v2.yaml](../deploy/todo-v2.yaml){:target="_blank"}):
 
 ```
 apiVersion: apps/v1

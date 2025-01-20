@@ -4,7 +4,7 @@ title: Overview, intial setup
 
 # Overview
 
-This hands-on lab is building upon the [Docker 101](https://harald-u.github.io/docker-101/) workshop. 
+This hands-on lab is building upon the [Docker 101](https://harald-u.github.io/docker-101/){:target="_blank"} workshop. 
 
 In the Docker workshop, a Node.js based ToDo app is packaged as a Container image and then run on Docker, first stand-alone using a built-in database, and then as a multi-container app running MySQL as database in a second container.
 
@@ -12,17 +12,17 @@ In the Docker workshop, a Node.js based ToDo app is packaged as a Container imag
 
 We will use the information contained in the Docker commands of the Docker 101 workshop to create equivalent Kubernetes configurations. 
 
-Building of Container Images is covered in the [Docker 101](https://harald-u.github.io/docker-101/docs/lab1#building-the-container-image). In this Kubernetes workshop we are using a Container image from my Docker Hub repository, but of course you can use your own.
+Building of Container Images is covered in the [Docker 101](https://harald-u.github.io/docker-101/docs/lab1#building-the-container-image){:target="_blank"}. In this Kubernetes workshop we are using a Container image from my Docker Hub repository, but of course you can use your own.
 
 The instructions in this lab are based on **Minikube**. They should work -- with some modifications -- with the Kubernetes that is part of Docker Desktop, with K3d, Kind, or any other Kubernetes distribution. Your mileage may vary ...
 
 ## Prerequisites
 
-* [Docker](https://docs.docker.com/desktop/)
-* [Minikube](https://minikube.sigs.k8s.io/docs/start/) Version 1.35.0 (using Kubernetes 1.32.0)
-* [git](https://git-scm.com/downloads)
-* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) Version 1.32.0
-* [stern](https://github.com/stern/stern/releases) 
+* [Docker](https://docs.docker.com/desktop/){:target="_blank"}
+* [Minikube](https://minikube.sigs.k8s.io/docs/start/){:target="_blank"} Version 1.35.0 (using Kubernetes 1.32.0)
+* [git](https://git-scm.com/downloads){:target="_blank"}
+* [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/){:target="_blank"} Version 1.32.0
+* [stern](https://github.com/stern/stern/releases){:target="_blank"} 
 
 All executables must be copied to a location in your PATH.
 

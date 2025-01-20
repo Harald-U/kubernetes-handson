@@ -17,7 +17,7 @@ Both, ToDo and MySQL use environment variables.
 
 Two of them serve identical purposes, password and database, but are named differently.
 
-Configuration parameters like these should be stored externally **(-> 12-Factor Apps!)** in [Kubernetes ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/). 
+Configuration parameters like these should be stored externally **(-> 12-Factor Apps!)** in [Kubernetes ConfigMaps](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){:target="_blank"}. 
 
 There are different ways to create a configmap. We use a simple version for our purpose which looks like this ([deploy/configmap-v1.yaml](../deploy/configmap-v1.yaml)):
 
@@ -58,7 +58,7 @@ env:
         key: MYSQL_PASSWORD
 ```
 
-The ToDo configuration is this ([deploy/todo-v3.yaml](../deploy/todo-v3.yaml)):
+The ToDo configuration is this ([deploy/todo-v3.yaml](../deploy/todo-v3.yaml){:target="_blank"}):
 
 ```
 apiVersion: apps/v1
@@ -106,7 +106,7 @@ spec:
 ---
 ```
 
-The MySQL configuration is this ([deploy/mysql-v3.yaml](../deploy/mysql-v2.yaml)):
+The MySQL configuration is this ([deploy/mysql-v3.yaml](../deploy/mysql-v2.yaml){:target="_blank"}):
 
 ```
 apiVersion: v1
